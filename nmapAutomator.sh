@@ -34,7 +34,6 @@ ping -c1 $1 | sed -nE 's/^PING[^(]+\(([^)]+)\).*/\1/p'
 header(){
 echo -e ""
 
-$newVar = findip
 
 if [ "$2" == "All" ]; then
 	echo -e "${YELLOW}Running all scans on $newVar"
@@ -515,6 +514,7 @@ if (( "$#" != 2 )); then
 	usage
 fi
 
+newVar=""
 isURL=0
 regex='^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$'
 if [[ $1 =~ $regex ]]
@@ -526,7 +526,8 @@ then
 	
 
 else
-	echo "Link not valid"
+	echo "Link not valid URL - Lets try to see if its a valid IP!"
+	newVar=$1
 fi
 
 if [[ $newVar =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -579,4 +580,3 @@ else
 	echo -e "${RED}"
 	usage
 fi
-       
